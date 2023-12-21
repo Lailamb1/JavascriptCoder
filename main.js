@@ -1,24 +1,88 @@
-function jugarPiedraPapelTijera() {
-    const opciones = ["piedra", "papel", "tijera"];
-    const eleccionComputadora = opciones[Math.floor(Math.random() * opciones.length)];
-    let eleccionUsuario = prompt("Elige: piedra, papel o tijera?").toLowerCase();
+let puntosUsuario = 0;
+let puntosPC = 0;
 
-    while (!opciones.includes(eleccionUsuario)) {
-        eleccionUsuario = prompt("Esa no es una opción válida. Elige: piedra, papel o tijera?").toLowerCase();
+let contenedorPuntosUsuario = document.querySelector("#puntos-usuario");
+let contenedorPuntosPC = document.querySelector("#puntos-computadora");
+let elegiTuArma = document.querySelector("#elegi-tu-arma");
+
+let botonesArmas = document.querySelectorAll(".arma");
+botonesArmas.forEach(boton => {
+    boton.addEventListener("click", iniciarTurno);
+});
+
+function iniciarTurno(e) {
+    
+    let eleccionPC = Math.floor(Math.random() * 3);
+    let eleccionUsuario = e.currentTarget.id;
+
+    // piedra => 0
+    // papel => 1
+    // tijera => 2
+
+    if (eleccionPC === 0) {
+        eleccionPC = "piedra🪨";
+    } else if (eleccionPC === 1) {
+        eleccionPC = "papel📋"
+    } else if (eleccionPC === 2) {
+        eleccionPC = "tijera✂️"
     }
 
-    alert(`La computadora eligió: ${eleccionComputadora}`);
+    // piedra vence a tijera
+    // tijera vence a papel
+    // papel vence a piedra
+    // si son iguales es empate
 
-    if (eleccionUsuario === eleccionComputadora) {
-        alert("¡Empate!");
-    } else if (
-        (eleccionUsuario === "piedra" && eleccionComputadora === "tijera") ||
-        (eleccionUsuario === "papel" && eleccionComputadora === "piedra") ||
-        (eleccionUsuario === "tijera" && eleccionComputadora === "papel")
+    if (
+        (eleccionUsuario === "piedra🪨" && eleccionPC === "tijera✂️") ||
+        (eleccionUsuario === "tijera✂️" && eleccionPC === "papel📋") ||
+        (eleccionUsuario === "papel📋" && eleccionPC === "piedra🪨")
     ) {
-        alert("¡Ganaste!");
+        ganaUsuario();
+    } else if (
+        (eleccionPC === "piedra🪨" && eleccionUsuario === "tijera✂️") ||
+        (eleccionPC === "tijera✂️" && eleccionUsuario === "papel📋") ||
+        (eleccionPC === "papel📋" && eleccionUsuario === "piedra🪨")
+    ) {
+        ganaPC();
     } else {
-        alert("¡Perdiste!");
+        empate();
     }
+
+    mensaje.classList.remove("disabled");
+    contenedorEleccionUsuario.innerText = eleccionUsuario;
+    contenedorEleccionPC.innerText = eleccionPC;
+
+    if (puntosUsuario === 5 || puntosPC === 5) {
+
+        if (puntosUsuario === 5) {
+            instrucciones.innerText = "🔥 ¡Ganaste el juego! 🔥"
+        }
+
+        if (puntosPC === 5) {
+            instrucciones.innerText = "😭 ¡La computadora ganó el juego! 😭"
+        }
+
+        elegiTuArma.classList.add("disabled");
+        reiniciar.classList.remove("disabled");
+        reiniciar.addEventListener("click", reiniciarJuego);
+    }
+
+
 }
-jugarPiedraPapelTijera();
+
+function ganaUsuario() {
+    puntosUsuario++;
+    contenedorPuntosUsuario.innerText = puntosUsuario;
+    alert("¡Ganaste un punto! 🔥");
+}
+
+function ganaPC() {
+    puntosPC++;
+    contenedorPuntosPC.innerText = puntosPC;
+    alert("¡La computadora ganó un punto! 😭");
+}
+
+function empate() {
+    alert("¡Empate! 😱");
+}
+
