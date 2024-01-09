@@ -13,6 +13,11 @@
 
     </header>
     <main>
+
+        <p class="instrucciones" id="instrucciones">
+            El primero en llegar a 5 puntos gana.
+        </p>
+
         <div class="marcador">
             <p class="nombre nombre-jugador">Jugador</p>
             <p class="nombre nombre-computadora">Computadora</p>
@@ -30,6 +35,15 @@
                 <button class="arma" id="tijera✂️">✂️</button>
             </div>
         </div>
+
+        <div class="mensaje disabled" id="mensaje">
+            <p>
+                Usaste <span class="eleccion" id="eleccion-usuario">papel📋</span><br>
+                y la computadora usó <span class="eleccion" id="eleccion-computadora">piedra🪨</span>
+            </p>
+            <p id="gana-punto">¡Ganaste un punto! 🔥</p>
+        </div>
+        <button class="btn disabled" id="reiniciar">Reiniciar juego</button>
 
     </main>
 

@@ -1,22 +1,36 @@
-/* Estilos generales */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Heebo', sans-serif;
 }
 
-/* Estilos para el encabezado */
+:root {
+  --clr-gold: #DCC48E;
+  --clr-beige: #EAEFD3;
+  --clr-purple: #27233A;
+}
+
+body {
+  background-color: var(--clr-purple);
+  color: var(--clr-beige);
+  width: 30%;
+  margin: 0 auto;
+}
+
 header {
-  text-align: center;
-  padding: 20px 0;
-  background-color: #333;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: var(--clr-beige);
+  color: var(--clr-purple);
+  border-bottom-left-radius: 3rem;
+  border-bottom-right-radius: 3rem;
 }
 
-/* Estilos para el contenedor principal */
 main {
-  font-size: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,63 +39,99 @@ main {
   text-align: center;
 }
 
-/* Estilos para las instrucciones */
 .instrucciones {
-  font-size: 18px;
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
+  font-size: 2rem;
 }
 
-/* Estilos para el marcador */
 .marcador {
-    background-color: var(--clr-gold);
-    padding: 1rem 2rem;
-    border-radius: 1rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    color: var(--clr-purple);
-    font-weight: 600;
-    font-size: 2rem;
+  background-color: var(--clr-gold);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: var(--clr-purple);
+  font-weight: 600;
+  margin-bottom: 2rem;
 }
 
 .marcador .nombre {
-    position: absolute;
-    color: var(--clr-beige);
-    background-color: var(--clr-purple);
-    line-height: 1;
-    padding: .5rem;
-    border-radius: .5rem;
-    border: 2px solid var(--clr-gold);
+  position: absolute;
+  color: var(--clr-beige);
+  background-color: var(--clr-purple);
+  line-height: 1;
+  padding: .5rem;
+  border-radius: .5rem;
+  border: 2px solid var(--clr-gold);
+  font-size: 1.3rem;
 
 }
 
 .marcador .nombre-jugador {
-    right: 85%;
+  right: 85%;
 }
 
 .marcador .nombre-computadora {
-    left: 85%;
+  left: 85%;
 }
 
-/* Estilos para la sección de armas */
+.marcador .puntos {
+  font-size: 1.6rem;
+}
+
 .elegi-tu-arma {
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
+}
+
+.elegi-tu-arma h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: .5rem;
 }
 
 .armas {
   display: flex;
   justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
 }
 
-/* Estilos para los botones de las armas */
 .arma {
-  font-size: 24px;
-  margin: 0 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+  font-size: 2rem;
+  background-color: var(--clr-beige);
+  border: 0;
+  padding: .5rem;
+  border-radius: .5rem;
   cursor: pointer;
 }
 
+.mensaje {
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.mensaje .eleccion {
+  color: var(--clr-purple);
+  background-color: var(--clr-gold);
+  border-radius: .25rem;
+  padding: .2rem;
+}
+
+
+.btn {
+  border: 0;
+  line-height: 1;
+  background-color: var(--clr-beige);
+  color: var(--clr-purple);
+  font-size: 1rem;
+  padding: .5rem;
+  border-radius: .5rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.disabled {
+  display: none;
+}
