@@ -14,7 +14,7 @@ const questions = [
         options: ["1969", "1972", "1965", "1970"],
         answer: "1969"
     }
-    // Agrega más preguntas siguiendo el mismo formato
+
 ];
 
 let currentQuestion = 0;
