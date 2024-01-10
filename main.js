@@ -1,75 +1,97 @@
-let puntosUsuario = 0;
-let puntosPC = 0;
-
-let contenedorPuntosUsuario = document.querySelector("#puntos-usuario");
-let contenedorPuntosPC = document.querySelector("#puntos-computadora");
-let elegiTuArma = document.querySelector("#elegi-tu-arma");
-
-let armas = ["piedra🪨", "papel📋", "tijera✂️"];
-let mensajes = ["¡Ganaste un punto! 🔥", "¡La computadora ganó un punto! 😭", "¡Empate! 😱", "🔥 ¡Ganaste el juego! 🔥", "😭 ¡La computadora ganó el juego! 😭"];
-
-let botonesArmas = document.querySelectorAll(".arma");
-botonesArmas.forEach((boton, index) => {
-    boton.id = armas[index];
-    boton.addEventListener("click", iniciarTurno);
-});
-
-function iniciarTurno(e) {
-    let eleccionPC = Math.floor(Math.random() * 3);
-    let eleccionUsuario = e.currentTarget.id;
-
-    if (eleccionPC === 0) {
-        eleccionPC = armas[0];
-    } else if (eleccionPC === 1) {
-        eleccionPC = armas[1];
-    } else if (eleccionPC === 2) {
-        eleccionPC = armas[2];
+const questions = [
+    {
+        question: "¿Cuál es la capital de Francia?",
+        options: ["Madrid", "París", "Londres", "Roma"],
+        answer: "París"
+    },
+    {
+        question: "¿Cuál es el río más largo del mundo?",
+        options: ["Nilo", "Amazonas", "Yangtsé", "Misisipi"],
+        answer: "Amazonas"
+    },
+    {
+        question: "¿En qué año llegó el hombre a la Luna?",
+        options: ["1969", "1972", "1965", "1970"],
+        answer: "1969"
     }
+    // Agrega más preguntas siguiendo el mismo formato
+];
 
-    if (
-        (eleccionUsuario === armas[0] && eleccionPC === armas[2]) ||
-        (eleccionUsuario === armas[2] && eleccionPC === armas[1]) ||
-        (eleccionUsuario === armas[1] && eleccionPC === armas[0])
-    ) {
-        ganaUsuario();
-    } else if (
-        (eleccionPC === armas[0] && eleccionUsuario === armas[2]) ||
-        (eleccionPC === armas[2] && eleccionUsuario === armas[1]) ||
-        (eleccionPC === armas[1] && eleccionUsuario === armas[0])
-    ) {
-        ganaPC();
+let currentQuestion = 0;
+let score = 0;
+
+const questionElem = document.getElementById('question');
+const optionsElem = document.getElementById('options');
+const nextButton = document.getElementById('next-btn');
+const resultElem = document.getElementById('result');
+const restartButton = document.getElementById('restart-btn');
+
+function loadQuestion() {
+    const q = questions[currentQuestion];
+    questionElem.textContent = q.question;
+    optionsElem.innerHTML = '';
+
+    q.options.forEach((option, index) => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = option;
+        optionButton.onclick = function() {
+            checkAnswer(option);
+        };
+        optionsElem.appendChild(optionButton);
+    });
+}
+
+function checkAnswer(option) {
+    const q = questions[currentQuestion];
+    if (option === q.answer) {
+        score++;
+        resultElem.textContent = '¡Respuesta correcta!🎉🥳';
+        resultElem.classList.add('correct-answer');
     } else {
-        empate();
+        resultElem.textContent = `Respuesta incorrecta. La respuesta correcta era: ${q.answer}`;
     }
-    
+    nextButton.classList.remove('hidden');
+    document.querySelectorAll('#options button').forEach(btn => {
+        btn.disabled = true;
+    });
 }
 
-function ganaUsuario() {
-    puntosUsuario++;
-    contenedorPuntosUsuario.innerText = puntosUsuario;
-    alert(mensajes[0]);
+function nextQuestion() {
+    currentQuestion++;
+    resultElem.textContent = '';
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+        nextButton.classList.add('hidden');
+        document.querySelectorAll('#options button').forEach(btn => {
+            btn.disabled = false;
+        });
+    } else {
+        showFinalScore();
+    }
 }
 
-function ganaPC() {
-    puntosPC++;
-    contenedorPuntosPC.innerText = puntosPC;
-    alert(mensajes[1]);
+function showFinalScore() {
+    questionElem.textContent = '¡Fin del juego!';
+    optionsElem.innerHTML = '';
+    resultElem.textContent = `Puntuación final: ${score} de ${questions.length}`;
+    nextButton.classList.add('hidden');
+    showRestartButton();
 }
 
-function empate() {
-    alert(mensajes[2]);
+function showRestartButton() {
+    restartButton.classList.remove('hidden');
+    restartButton.addEventListener("click", restartGame);
 }
 
-function reiniciarJuego() {
-    reiniciar.classList.add("disabled");
-    elegiTuArma.classList.remove("disabled");
-    mensaje.classList.add("disabled");
-
-    puntosUsuario = 0;
-    puntosPC = 0;
-
-    contenedorPuntosUsuario.innerText = puntosUsuario;
-    contenedorPuntosPC.innerText = puntosPC;
+function restartGame() {
+    currentQuestion = 0;
+    score = 0;
+    loadQuestion();
+    resultElem.textContent = '';
+    restartButton.classList.add('hidden');
 }
 
-reiniciar.addEventListener("click", reiniciarJuego);
+nextButton.addEventListener('click', nextQuestion);
+restartButton.addEventListener('click', restartGame);
+
+loadQuestion();
