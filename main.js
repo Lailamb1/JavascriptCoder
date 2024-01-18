@@ -14,17 +14,20 @@ const questions = [
         options: ["1969", "1972", "1965", "1970"],
         answer: "1969"
     }
-
 ];
 
 let currentQuestion = 0;
 let score = 0;
+let gameHistory = [];
 
 const questionElem = document.getElementById('question');
 const optionsElem = document.getElementById('options');
 const nextButton = document.getElementById('next-btn');
 const resultElem = document.getElementById('result');
 const restartButton = document.getElementById('restart-btn');
+const historialDiv = document.getElementById('historial');
+const historialList = document.getElementById('historial-list');
+const verHistorialBtn = document.getElementById('ver-historial-btn');
 
 function loadQuestion() {
     const q = questions[currentQuestion];
@@ -67,6 +70,8 @@ function nextQuestion() {
         });
     } else {
         showFinalScore();
+        saveGameHistory(); // Guarda la partida en el historial al finalizar
+        updateHistorial(); // Actualiza la visualización del historial
     }
 }
 
@@ -74,12 +79,14 @@ function showFinalScore() {
     questionElem.textContent = '¡Fin del juego!';
     optionsElem.innerHTML = '';
     resultElem.textContent = `Puntuación final: ${score} de ${questions.length}`;
+    resultElem.classList.add('final-score'); // Agrega la clase para aplicar el margen
     nextButton.classList.add('hidden');
     showRestartButton();
 }
 
 function showRestartButton() {
     restartButton.classList.remove('hidden');
+    verHistorialBtn.classList.remove('hidden');
     restartButton.addEventListener("click", restartGame);
 }
 
@@ -89,9 +96,38 @@ function restartGame() {
     loadQuestion();
     resultElem.textContent = '';
     restartButton.classList.add('hidden');
+    historialDiv.classList.add('hidden');
 }
+
+function saveGameHistory() {
+    const gameResult = {
+        score: score,
+        totalQuestions: questions.length,
+        date: new Date().toLocaleString()
+    };
+    gameHistory.push(gameResult);
+    localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
+}
+
+function updateHistorial() {
+    historialList.innerHTML = '';
+
+    gameHistory.forEach(result => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<strong>Puntuación:</strong> ${result.score}/${result.totalQuestions},<strong>Fecha:</strong> ${result.date}`;
+        historialList.appendChild(listItem);
+    });
+}
+
+verHistorialBtn.addEventListener('click', () => {
+    historialDiv.classList.toggle('hidden');
+});
 
 nextButton.addEventListener('click', nextQuestion);
 restartButton.addEventListener('click', restartGame);
+
+if (localStorage.getItem('gameHistory')) {
+    gameHistory = JSON.parse(localStorage.getItem('gameHistory'));
+}
 
 loadQuestion();
