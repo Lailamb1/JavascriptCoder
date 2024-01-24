@@ -1,20 +1,11 @@
-const questions = [
-    {
-        question: "¿Cuál es la capital de Francia?",
-        options: ["Madrid", "París", "Londres", "Roma"],
-        answer: "París"
-    },
-    {
-        question: "¿Cuál es el río más largo del mundo?",
-        options: ["Nilo", "Amazonas", "Yangtsé", "Misisipi"],
-        answer: "Amazonas"
-    },
-    {
-        question: "¿En qué año llegó el hombre a la Luna?",
-        options: ["1969", "1972", "1965", "1970"],
-        answer: "1969"
-    }
-];
+fetch('preguntas.json')
+.then(response => response.json())
+.then(data => {
+
+    questions = data;
+    loadQuestion();
+})
+.catch(error => console.error('Error al cargar las preguntas', error));
 
 let currentQuestion = 0;
 let score = 0;
@@ -70,8 +61,8 @@ function nextQuestion() {
         });
     } else {
         showFinalScore();
-        saveGameHistory(); // Guarda la partida en el historial al finalizar
-        updateHistorial(); // Actualiza la visualización del historial
+        saveGameHistory(); 
+        updateHistorial(); 
     }
 }
 
@@ -79,7 +70,7 @@ function showFinalScore() {
     questionElem.textContent = '¡Fin del juego!';
     optionsElem.innerHTML = '';
     resultElem.textContent = `Puntuación final: ${score} de ${questions.length}`;
-    resultElem.classList.add('final-score'); // Agrega la clase para aplicar el margen
+    resultElem.classList.add('final-score');
     nextButton.classList.add('hidden');
     showRestartButton();
 }
